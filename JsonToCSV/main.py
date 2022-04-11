@@ -8,9 +8,10 @@ from heat_map import PlotField
 def main():
     config = rc()
     pull = pd(config)
-    pull.set_data()
-    print(pull.get_server_sorce())
+#    pull.set_data()
+   # print(pull.get_server_sorce())
     j = pull.get_json_data('2022pncmp_qm81') 
+    pull.get_json_team_key('blue', 'frc2471')
     
     blue_one = j['alliances']['blue'][0] 
 
