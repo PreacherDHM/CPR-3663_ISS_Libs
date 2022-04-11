@@ -67,7 +67,7 @@ class read_config:
             if name == 'set':
                 if len(data.split(':')) >= 1:
                     data = data.replace(":","")
-                    for x in range(self.data_number_of_frames):
+                    for x in range(1,self.data_number_of_frames):
                         self.data_server_frames.append(data +  str(x) + self.data_frame_options)
 
                 self.data_server_frames.append(data)
@@ -151,7 +151,6 @@ class pull_data:
         
         for file_nomber in range(1,self.config.data_number_of_frames):
             #try:
-            print('loading file -> ' + self.config.data_output_path + self.config.data_project_name +'-'+ self.config.data_server_frames[file_nomber].split('/')[0] + '.json')
             json_file = open(self.config.data_output_path + self.config.data_project_name +'-'+ self.config.data_server_frames[file_nomber].split('/')[0] + '.json', 'r')
             json_data = json.load(json_file)
             json_file.close()
@@ -159,14 +158,9 @@ class pull_data:
                 continue
             for team_count in range(len(json_data['alliances'][alliances])):
 
-                print (json_data['alliances'][alliances][team_count]['team_key'] + ' -> ' + team)
-                print (json_data['alliances'][alliances][team_count]['team_key'] == team)
                 if json_data['alliances'][alliances][team_count]['team_key'] == None:
                     continue
                 if json_data['alliances'][alliances][team_count]['team_key'] == team:
-                    x = len(json_data['alliances'][alliances][team_count]['xs'])
-                    print(x)
-
 
                     for item in json_data['alliances'][alliances][team_count]['xs']:
                         if item != None:
