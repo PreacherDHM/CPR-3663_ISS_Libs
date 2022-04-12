@@ -8,6 +8,7 @@ import json
 import sys
 
 
+
 def main():
 	config = rc()
 	pull = pd(config)
@@ -24,7 +25,7 @@ def main():
 	json_data = None
 	
 	print('arg len: ' + str(arg_len))
-	while True:
+	while len(args) < arg_pos:
 		if args[arg_pos] == '-t': # get all match data for team
 			
 			teams = args[arg_pos +1].split(' ')
@@ -102,10 +103,102 @@ def main():
 		
 
 		if args[arg_pos] == '':
+			
 			return
 		
 		if arg_len == arg_pos:
+			
 			return
 		arg_pos +=1
 
 main()
+
+config = rc()
+pull = pd(config)
+
+hm = PlotField('all maches, ', 'Feeled.png')
+
+while True:
+	print("what do you want to take a look at?")
+	print('teams or teams all matches: 1')
+	print('match: 2')
+	print('teams or team in match: 3')
+
+	command = int(input('option: '))
+
+
+	if command == 1:
+		
+		print('alliances/frc(team number) exsample: red/frc3663')
+		teams = input('teams:').split(' ')
+		print(teams)
+		
+		for team in teams:
+			a = team.split('/')[0]
+			t = team.split('/')[1]
+			json_data = pull.get_json_team_key(a, t)
+			data = json_data['alliances'][a]
+			x = np.array(list(map(float ,data['xs'])))
+			y = np.array(list(map(float,data['ys'])))
+			print('reading')
+			hm.plot(x,y, a, t)
+		hm.show_ps('all maches', 'comp')
+		break
+	if command == 2:
+		arg_pos +=1 
+		print('Match name')
+		match = input('match: ')
+		json_data = pull.get_json_data(match)['alliances']
+		for alliances in json_data:
+			x = []
+			y = []
+			print(alliances)
+			for team in range(3):
+				print(team)
+				for xs in json_data[alliances][team]['xs']:
+					if xs != None and xs != 'null':
+						x.append(float(xs))
+				for ys in json_data[alliances][team]['ys']:
+					if ys != None and ys != 'null':
+						y.append(float(ys))
+				ny = np.array(y)
+				nx = np.array(x)
+				hm.plot(nx,ny,alliances, json_data[alliances][team]['team_key'])
+						
+		hm.show()
+
+		break
+	if command == 3:
+
+	
+		print('Match name')
+		match = str(input('match: '))
+
+		print('alliances/frc(team number) exsample: red/frc3663')
+		target_team = input('teams: ').split(' ')
+		for team in target_team:
+			x = []
+			y = []
+			t = team.split('/')[1]
+			a = team.split('/')[0]
+
+			json_data = pull.get_json_data(match)['alliances'][a]
+			print(a)
+			for team in range(3):
+				print(team)
+				if json_data[team]['team_key'] == t:
+					for xs in json_data[team]['xs']:
+						if xs != None and xs != 'null':
+							x.append(float(xs))
+					for ys in json_data[team]['ys']:
+						if ys != None and ys != 'null':
+							y.append(float(ys))
+					
+					ny = np.array(y)
+					nx = np.array(x)
+					hm.plot(nx,ny,a, json_data[team]['team_key'])
+					
+					
+		hm.show()
+		break
+	command = input()
