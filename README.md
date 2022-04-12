@@ -40,7 +40,7 @@ matplotlib
 # Commands
 Here are the main commands for *Match Viewer*.
 
-*For all of this to work you have to navigate to the path were you downloaded the program (cd DOWN_LOADED_PATH/CPR-3663_ISS_Libs/Match_Viewer/)*
+*For all of this to work you have to navigate to the path were you downloaded the program (```cd DOWN_LOADED_PATH/CPR-3663_ISS_Libs/Match_Viewer/```)*
 
 
 > The first command that you need to run is: ```python3 matchv.py -u```. This will grab all specified data from the config file.
