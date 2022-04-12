@@ -143,12 +143,13 @@ class pull_data:
     def get_json_team_key(self, alliances, team):
         team_data = {
                 "alliances":{
-                    "blue":{"xs":[],"ys":[]},
-                    "red":{"xs":[],"ys":[]}
+                    "blue":{"team_key": "","xs":[],"ys":[]},
+                    "red":{"team_key": "","xs":[],"ys":[]}
                 }
                 }
         
-        
+        team_data['alliances']['blue']['team_key'] = team
+        team_data['alliances']['red']['team_key'] = team
         for file_nomber in range(1,self.config.data_number_of_frames):
             #try:
             json_file = open(self.config.data_output_path + self.config.data_project_name +'-'+ self.config.data_server_frames[file_nomber].split('/')[0] + '.json', 'r')
@@ -156,21 +157,33 @@ class pull_data:
             json_file.close()
             if json_data == None:
                 continue
-            for team_count in range(len(json_data['alliances'][alliances])):
+
+            try:
+                team_len = len(json_data['alliances'][alliances])
+            except:
+                continue
+            for team_count in range(team_len):
 
                 if json_data['alliances'][alliances][team_count]['team_key'] == None:
                     continue
+                if json_data['alliances'] == None:
+	                continue
                 if json_data['alliances'][alliances][team_count]['team_key'] == team:
-
+                    
+                    x = len(json_data['alliances'][alliances][team_count]['xs'])
                     for item in json_data['alliances'][alliances][team_count]['xs']:
-                        if item != None:
+                        if item != None and item != 'null':
                             team_data["alliances"][alliances]['xs'].append(item)
+
+	                        
 
 
                     for item in json_data['alliances'][alliances][team_count]['ys']:
-                        if item != None:
+                        if item != None and item != 'null':
                             team_data["alliances"][alliances]['ys'].append(item) 
-            with open(self.config.data_output_path + self.config.data_project_name + str(team) + '.json', 'w') as team_key_writer: 
+
+                            
+            with open(self.config.data_output_path + self.config.data_project_name +'-'+ str(team) + '.json', 'w') as team_key_writer: 
                 json.dump(team_data, team_key_writer)
         #except Exception:
         return team_data
