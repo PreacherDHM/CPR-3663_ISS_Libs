@@ -67,7 +67,7 @@ class read_config:
             if name == 'set':
                 if len(data.split(':')) >= 1:
                     data = data.replace(":","")
-                    for x in range(1,self.data_number_of_frames):
+                    for x in range(1,self.data_number_of_frames + 1):
                         self.data_server_frames.append(data +  str(x) + self.data_frame_options)
 
                 self.data_server_frames.append(data)

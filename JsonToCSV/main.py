@@ -11,22 +11,8 @@ import sys
 def main():
 	config = rc()
 	pull = pd(config)
-	#pull.set_data()
-	#print(pull.get_server_sorce())
-	j = pull.get_json_data('2022pncmp_qm81') 
-	pull.get_json_team_key('red', 'frc3663')
-	
-	j_data = pull.get_json_data('frc3663')
 
-	data = j_data['alliances']['red']
-	blue_one = j['alliances']['red'][1] 
-
-
-	
-	x = np.array(list(map(float ,data['xs'])))
-	y = np.array(list(map(float,data['ys'])))
-
-	hm = PlotField(data['team_key'] + 'all maches, ', 'Feeled.png')
+	hm = PlotField('all maches, ', 'Feeled.png')
 	#hm.plot()
 
 	args = sys.argv[1:]
@@ -56,17 +42,61 @@ def main():
 			hm.show_ps('all maches', 'comp')
 			return
 		if args[arg_pos] == '-mt': # get team in match
+			x = []
+			y = []
 			arg_pos +=1 
-			teams.append(args[arg_pos])
+			match = args[arg_pos]
+			arg_pos +=1
+			target_team = args[arg_pos].split(' ')
+			for team in target_team:
+				t = team.split('/')[1]
+				a = team.split('/')[0]
+
+				json_data = pull.get_json_data(match)['alliances'][a]
+				print(a)
+				for team in range(3):
+					print(team)
+					if json_data[team]['team_key'] == t:
+						for xs in json_data[team]['xs']:
+							if xs != None and xs != 'null':
+								x.append(float(xs))
+						for ys in json_data[team]['ys']:
+							if ys != None and ys != 'null':
+								y.append(float(ys))
+						
+						ny = np.array(y)
+						nx = np.array(x)
+						hm.plot(nx,ny,a, json_data[team]['team_key'])
+						
+							
+			hm.show()
 			
-			continue
+			break
 		if args[arg_pos] == '-m': # get teams in a match
-			arg_pos += 1
-			teams.append(args[arg_pos])
-			continue
+			x = []
+			y = []
+			arg_pos +=1 
+			match = args[arg_pos]
+			json_data = pull.get_json_data(match)['alliances']
+			for alliances in json_data:
+				print(alliances)
+				for team in range(3):
+					print(team)
+					for xs in json_data[alliances][team]['xs']:
+						if xs != None and xs != 'null':
+							x.append(float(xs))
+					for ys in json_data[alliances][team]['ys']:
+						if ys != None and ys != 'null':
+							y.append(float(ys))
+					ny = np.array(y)
+					nx = np.array(x)
+					hm.plot(nx,ny,alliances, json_data[alliances][team]['team_key'])
+							
+			hm.show()
+			break
 		if args[arg_pos] == '-u': # updata data
 			pull.set_data()
-			continue
+			break
 		
 
 		if args[arg_pos] == '':
