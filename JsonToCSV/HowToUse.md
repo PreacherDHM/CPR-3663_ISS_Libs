@@ -20,7 +20,7 @@ matplotlib
 
 ## Installation
 > ### Installing Python3
->To install python3 go to [click here](https://www.python.org/downloads/) to go to the download page an fallow the instructions there.
+> To install python3 go to [click here](https://www.python.org/downloads/) to go to the download page an fallow the instructions there.
 
 > ### installing Numpy
 > to install numpy go to your tuminal or command propmt and type in this command.
@@ -46,7 +46,7 @@ python3 matchv.py
 ```
 But to achuly make it work you need to give it some commands.
 
->the first command that you need to run is: ```python3 matchv.py -u``` this will grab all of the data the is spesifid in the config file.
+> the first command that you need to run is: ```python3 matchv.py -u``` this will grab all of the data the is spesifid in the config file.
 ```shell
 python3 matchv.py -t "red/frc3663"
 ```
