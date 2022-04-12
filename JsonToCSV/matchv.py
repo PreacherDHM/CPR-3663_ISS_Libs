@@ -42,13 +42,14 @@ def main():
 			hm.show_ps('all maches', 'comp')
 			return
 		if args[arg_pos] == '-mt': # get team in match
-			x = []
-			y = []
+
 			arg_pos +=1 
 			match = args[arg_pos]
 			arg_pos +=1
 			target_team = args[arg_pos].split(' ')
 			for team in target_team:
+				x = []
+				y = []
 				t = team.split('/')[1]
 				a = team.split('/')[0]
 
@@ -73,12 +74,13 @@ def main():
 			
 			break
 		if args[arg_pos] == '-m': # get teams in a match
-			x = []
-			y = []
+			
 			arg_pos +=1 
 			match = args[arg_pos]
 			json_data = pull.get_json_data(match)['alliances']
 			for alliances in json_data:
+				x = []
+				y = []
 				print(alliances)
 				for team in range(3):
 					print(team)
